@@ -42,7 +42,7 @@ class TodoSerializer(serializers.ModelSerializer):
     # v_input = variationvauleserializer(many=True,read_only=True)\
     variation_value_input = serializers.PrimaryKeyRelatedField(
         many=True,
-        read_only=True,
+        queryset=Variation_value_input.objects.all()
     )
 
     class Meta:
