@@ -39,6 +39,12 @@ class TodoSerializer(serializers.ModelSerializer):
     # status = serializers.StringRelatedField()
     # variation_value_input = variationvauleserializer()
     # items = variationvauleserializer()
+    # v_input = variationvauleserializer(many=True,read_only=True)\
+    variation_value_input = serializers.PrimaryKeyRelatedField(
+        many=True,
+        read_only=True,
+    )
+
     class Meta:
         model = Todo
         fields =  ('id','title','folder','status','description','completed','created_at','updated_at','variation_value_input',)
