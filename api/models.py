@@ -41,11 +41,11 @@ class Variation_value_input(models.Model):
 
 
 class Todo(models.Model):
-    title = models.CharField(max_length=600)
+    title = models.CharField(max_length=200)
     folder = models.ForeignKey(Folder,on_delete=models.CASCADE, blank=True , null=True  )
     variation_value_input = models.ManyToManyField(Variation_value_input,blank=True , related_name='v_input')
     status = models.ForeignKey(Status,on_delete=models.CASCADE, blank=True , null=True )
-    description = models.TextField(max_length=600)
+    description = models.TextField(max_length=200)
     completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
