@@ -11,8 +11,9 @@ class ApiTodoView(APIView):
     def get(self , request):
         todo = Todo.objects.all()
         serializer = TodoSerializer(todo , many=True )
-        return Response(serializer.data)
-    
+        return Response({
+            'todo':serializer.data
+        })
     def post (self , request ):
         serializer = TodoSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -25,7 +26,7 @@ class ApiSingleTodo (APIView ):
         todo = get_object_or_404(Todo,pk=pk )
         serializer = TodoSerializer(todo)
         return Response(serializer.data)
-    def post(self , request , pk ):
+    def put(self , request , pk ):
         todo = get_object_or_404(Todo,pk=pk )
         serializer = TodoSerializer(todo , data= request.data)
         serializer.is_valid(raise_exception=True)
@@ -112,7 +113,7 @@ class ApiVariationValueview(APIView):
         variationValue = Variation_value_input.objects.all()
         serializers = variationvauleserializer(variationValue,many=True)
         return Response(serializers.data)
-    def post (self , request ):
+    def put (self , request ):
         serializers = variationvauleserializer(data = request.data)
         serializers.is_valid(raise_exception=True)
         serializers.save()
@@ -120,4 +121,13 @@ class ApiVariationValueview(APIView):
     
 
 
+# class apitodoview(APIView):
+#     def get (self ,request):
+#         todo = Todo.objects.all()
+#         serializers = checkUndoTodo({
+          
+#             'count':len(todo)
 
+
+#         })
+#         return Response(serializers.data)
