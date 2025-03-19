@@ -49,6 +49,7 @@ class Variation_value_input(models.Model):
 
 
 class Todo(models.Model):
+    
     title = models.CharField(max_length=200)
     folder = models.ForeignKey(Folder,on_delete=models.CASCADE, blank=True , null=True,related_name='folder_related_name'  )
     variation_value_input = models.ManyToManyField(Variation_value_input,blank=True , related_name='v_input')
