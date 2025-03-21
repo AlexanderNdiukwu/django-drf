@@ -2,20 +2,26 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
+# from django.contrib.auth.models import User
 from .models import *
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
 class ApiTodoView(APIView):
-    
-    
+    filter_backend = [DjangoFilterBackend]
+    filter_fields = ['title']
+  
 
     def get(self , request):
       
+        # todo = Todo.objects.filter(user= request.user)
         todo = Todo.objects.all()
 
+
         serializer = TodoSerializer(todo , many=True )
+      
         return Response({
             'todo':serializer.data,
             'count':len(todo),
@@ -29,7 +35,9 @@ class ApiTodoView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-   
+  
+    
+    
     
 
 class ApiSingleTodo (APIView ):
