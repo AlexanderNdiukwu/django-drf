@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 
@@ -49,8 +50,10 @@ class Variation_value_input(models.Model):
 
 
 class Todo(models.Model):
+
     
     title = models.CharField(max_length=200)
+    user = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
     folder = models.ForeignKey(Folder,on_delete=models.CASCADE, blank=True , null=True,related_name='folder_related_name'  )
     variation_value_input = models.ManyToManyField(Variation_value_input,blank=True , related_name='v_input')
     status = models.ForeignKey(Status,on_delete=models.CASCADE, blank=True , null=True )
@@ -62,3 +65,5 @@ class Todo(models.Model):
 
     def __str__(self):
         return self.title
+    
+    

@@ -8,17 +8,28 @@ from rest_framework import status
 
 # Create your views here.
 class ApiTodoView(APIView):
+    
+    
+
     def get(self , request):
+      
         todo = Todo.objects.all()
+
         serializer = TodoSerializer(todo , many=True )
         return Response({
-            'todo':serializer.data
+            'todo':serializer.data,
+            'count':len(todo),
+          
+            
         })
+    
+
     def post (self , request ):
         serializer = TodoSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+   
     
 
 class ApiSingleTodo (APIView ):
@@ -112,7 +123,7 @@ class ApiVariationValueview(APIView):
     def get(self , request):
         variationValue = Variation_value_input.objects.all()
         serializers = variationvauleserializer(variationValue,many=True)
-        return Response(serializers.data)
+        return Response({'value':serializers.data,'count':len(variationValue)})
     def put (self , request ):
         serializers = variationvauleserializer(data = request.data)
         serializers.is_valid(raise_exception=True)
@@ -121,13 +132,8 @@ class ApiVariationValueview(APIView):
     
 
 
-# class apitodoview(APIView):
-#     def get (self ,request):
-#         todo = Todo.objects.all()
-#         serializers = checkUndoTodo({
-          
-#             'count':len(todo)
-
-
-#         })
-#         return Response(serializers.data)
+class apitodoview(APIView):
+    def get (self ,request):
+        todo = Todo.objects.all()
+        serializers = checkUndoTodo({'count':len(todo)})
+        return Response(serializers.data)

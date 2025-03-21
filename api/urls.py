@@ -12,6 +12,6 @@ urlpatterns = [
     path ('status/<int:pk>',views.deletestatus.as_view()),
     path ('Variation/',views.ApiVariationView.as_view()),
     path ('VariationValue/',views.ApiVariationValueview.as_view()),
-    # path ('todoinfo/',views.apitodoview.as_view()),
+    path ('todoinfo/',views.apitodoview.as_view()),
  
 ]

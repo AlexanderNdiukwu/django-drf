@@ -36,12 +36,22 @@ class statusSerializer(serializers.ModelSerializer):
 class TodoSerializer(serializers.ModelSerializer):
     # folder_name = serializers.CharField(source='folder.folder_description', allow_null=True, default=None)
     # variation_value_input = serializers.SerializerMethodField()
+  
+    
+
 
     class Meta:
         model = Todo
-        fields = ('id', 'title', 'folder','status', 'description', 'completed', 'created_at', 'updated_at', 'variation_value_input')
+        fields = ('id','user', 'title', 'folder','status', 'description', 'completed', 'created_at', 'updated_at', 'variation_value_input')
 
     # def get_variation_value_input(self, obj):
     #     if obj.variation_value_input.exists():
     #         return [{'id': v.variation_value_id, 'value': v.variation_value_value} for v in obj.variation_value_input.all()]
     #     return []
+
+
+
+
+
+class checkUndoTodo(serializers.Serializer):
+    count = serializers.CharField()
