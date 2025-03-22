@@ -5,7 +5,7 @@ class variationserializer(serializers.ModelSerializer):
     # variation_name = variationvauleserializer(many=True )
     class Meta:
         model = Variation
-        fields = ('variation_id','variation_value',)
+        fields = ('variation_id','variation_value')
 
 
 

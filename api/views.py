@@ -2,59 +2,82 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
-# from django.contrib.auth.models import User
 from .models import *
 from django.shortcuts import get_object_or_404
-from rest_framework import status
+from rest_framework import status,generics,permissions
+from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
-class ApiTodoView(APIView):
-    filter_backend = [DjangoFilterBackend]
-    filter_fields = ['title']
+# class ApiTodoView(APIView):
+#     filter_backend = [DjangoFilterBackend]
+#     filter_fields = ['title']
   
 
-    def get(self , request):
+#     def get(self , request):
       
-        # todo = Todo.objects.filter(user= request.user)
-        todo = Todo.objects.all()
+#         # todo = Todo.objects.filter(user= request.user)
+#         todo = Todo.objects.all()
+#         filter_backend = DjangoFilterBackend()
+#         queryset = filter_backend.filter_queryset(request, queryset, self)
 
 
-        serializer = TodoSerializer(todo , many=True )
+
+#         serializer = TodoSerializer(todo , many=True )
       
-        return Response({
-            'todo':serializer.data,
-            'count':len(todo),
+#         return Response({
+#             'todo':serializer.data,
+#             'count':len(todo),
           
             
-        })
+#         })
     
 
-    def post (self , request ):
-        serializer = TodoSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
-  
+#     def post (self , request ):
+#         serializer = TodoSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data)
     
+
+class ApiTodoView(generics.ListCreateAPIView): 
+    # queryset = Todo.objects.all() 
+    serializer_class = TodoSerializer
+    filter_backends = [DjangoFilterBackend,SearchFilter]
+    # permission_classes = [permissions.IsAuthenticated]
+    filterset_fields = ['title', 'status','completed'] 
+    search_fields = ['title','completed']
     
     
 
-class ApiSingleTodo (APIView ):
-    def get (self , request , pk ):
-        todo = get_object_or_404(Todo,pk=pk )
-        serializer = TodoSerializer(todo)
-        return Response(serializer.data)
-    def put(self , request , pk ):
-        todo = get_object_or_404(Todo,pk=pk )
-        serializer = TodoSerializer(todo , data= request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
-    def delete(self , request , pk ):
-        todo = get_object_or_404(Todo,pk = pk )
-        todo.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def get_queryset(self):
+        user = self.request.user
+        # qs = super().get_queryset()
+        return Todo.objects.filter(user=user)
+ 
+
+
+class ApiSingleTodo(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Todo.objects.all()
+    serializer_class= TodoSerializer
+    
+    
+
+# class ApiSingleTodo (APIView ):
+#     def get (self , request , pk ):
+#         todo = get_object_or_404(Todo,pk=pk )
+#         serializer = TodoSerializer(todo)
+#         return Response(serializer.data)
+#     def put(self , request , pk ):
+#         todo = get_object_or_404(Todo,pk=pk )
+#         serializer = TodoSerializer(todo , data= request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data)
+#     def delete(self , request , pk ):
+#         todo = get_object_or_404(Todo,pk = pk )
+#         todo.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
@@ -80,7 +103,7 @@ class deletestatus(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-        
+# class ApiFolderview(generics.list)      
 
 
 
