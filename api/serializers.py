@@ -11,11 +11,11 @@ class variationserializer(serializers.ModelSerializer):
 
 class variationvauleserializer(serializers.ModelSerializer):
     # variation = variationserializer()
-    got = serializers.CharField(source='variation')  
+    # got = serializers.CharField(source='variation')  
 
     class Meta:
         model = Variation_value_input
-        fields = ('variation_value_id', 'variation','variation_value_value','got')
+        fields = ('variation_value_id', 'variation','variation_value_value')
 
 
 
