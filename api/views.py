@@ -60,9 +60,9 @@ class ApiTodoView(generics.ListCreateAPIView):
     
     
 
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     return Todo.objects.filter(user=user)
+    def get_queryset(self):
+        user = self.request.user
+        return Todo.objects.filter(user=user)
     
     # def create(self, request , *args , **kwargs):
     #     permissions = [permissions.is]
