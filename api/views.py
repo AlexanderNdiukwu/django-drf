@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from .serializers import *
+
 from .models import *
 from django.shortcuts import get_object_or_404
 from rest_framework import status,generics,permissions
@@ -50,7 +51,7 @@ class adminonly(permissions.BasePermission):
     
 
 class ApiTodoView(generics.ListCreateAPIView): 
-    queryset = Todo.objects.all() 
+    queryset = Todo.objects.all()
     serializer_class = TodoSerializer
     filter_backends = [DjangoFilterBackend,SearchFilter]
     permission_classes = [adminonly]
@@ -58,16 +59,23 @@ class ApiTodoView(generics.ListCreateAPIView):
     filterset_fields = ['title', 'status','completed'] 
     search_fields = ['title','completed']
     
-    
-
     def get_queryset(self):
         user = self.request.user
         return Todo.objects.filter(user=user)
-    
-    # def create(self, request , *args , **kwargs):
-    #     permissions = [permissions.is]
- 
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return Todo.objects.filter(user=user)
+
+    
+ 
 
 class ApiSingleTodo(RetrieveUpdateDestroyAPIView):
     queryset = Todo.objects.all()
